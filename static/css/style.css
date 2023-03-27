@@ -308,6 +308,16 @@ background: linear-gradient(17deg, rgba(34,193,195,1) 0%, rgba(45,253,142,1) 100
     align-self: flex-end;
 }
 
+.sentDate {
+    right: 0%;
+    text-align: right;
+    width: auto;
+    margin: 0;
+    margin-left: 70%;
+    display: flex;
+    align-self: flex-end;
+}
+
 #currentDiscussion {
     position: absolute;
     top: 0%;

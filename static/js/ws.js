@@ -211,8 +211,10 @@ var FirstLoad = true;
 
 console.log(FirstLoad)
 let userMessages = [];
+let userMessagesDates = [];
 function loadConversation(user) {
   userMessages = [];
+  userMessagesDates = [];
   if (user!=currentDiscussion) {
     Counter = 10;
     FirstLoad = true;
@@ -228,6 +230,7 @@ function loadConversation(user) {
         UserConversations[i].From == user
       ) {
         userMessages.push(UserConversations[i]);
+        userMessagesDates.push(UserConversations[i].Date);
       }
     }
   }
@@ -236,10 +239,12 @@ function loadConversation(user) {
     
     //Reverse userMessages and get the last 10 messages
     userMessages = userMessages.reverse().slice(0, Counter);
+    userMessagesDates = userMessagesDates.reverse().slice(0, Counter);
     console.log(userMessages)
     console.log(lenmsg)
     //Reverse userMessages again to get the correct order
     userMessages = userMessages.reverse();
+    userMessagesDates = userMessagesDates.reverse();
     Counter += 10;
     if (Counter > lenmsg) {
       Counter = lenmsg;
@@ -250,13 +255,20 @@ function loadConversation(user) {
   }
   for (let j = 0; j < userMessages.length; j++) {
     let p = document.createElement("p");
+    let p2 = document.createElement("p");
     if (userMessages[j].To == user) {
       p.classList.add("sent");
+      p2.classList.add("sentDate");
     } else {
       p.classList.add("received");
     }
     p.innerText = userMessages[j].Content;
+    console.log(userMessagesDates[j]);
+    const date = new Date(Number(userMessagesDates[j]));
+    const dateString = date.toLocaleString();
+    p2.innerText = dateString;
     if (document.querySelector(".conv") != null) {
+      document.querySelector(".conv").appendChild(p2);
       document.querySelector(".conv").appendChild(p);
     }
   }
