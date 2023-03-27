@@ -1,0 +1,479 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: rgb(89,147,184);
+    background: linear-gradient(90deg, rgba(89,147,184,1) 0%, rgba(158,229,255,1) 50%, rgba(242,242,242,1) 100%);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+
+    display: flex;
+    flex-direction: column;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-family: Arial;
+    color: rgb(80, 80, 131);
+}
+
+a:hover {
+    border-bottom: 3px solid rgb(80, 80, 131);
+}
+
+.header{
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 0;
+    height: 75px;
+}
+
+#app {
+    flex: auto;
+}
+
+.header .header__logo{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px;
+}
+
+.header .header__logo img{
+    max-width: 100%;
+    height: auto;
+}
+
+.header .header__menu{
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: none;
+    
+    margin: 0 10px;
+    
+}
+
+.header .header__menu ul{
+    color: #333;
+    text-decoration: none;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.header .header__menu ul li{
+    display: inline-block;
+    margin: 0 10px;
+}
+
+footer {
+    height: min-content;
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.left {
+    width: 32%;
+}
+.mid {
+    width: 32%;
+}
+.right {
+    width: 32%;
+}
+
+#logo {
+    width: 50px;
+    height: 50px;
+}
+
+.popup {
+    position: absolute;
+    width: 25%;
+    left: 37.5%;
+    height: auto;
+    top: auto;
+    border-radius: 8px;
+    background-color: #e5e5e5df;
+    align-items:center;
+    text-align: center;
+    padding: auto;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.popup label {
+    position: absolute;
+    left: 10%;
+}
+
+input {
+    width: 80%;
+    height: 30px;
+    border: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin: 5px;
+}
+
+select {
+    width: 80%;
+    height: 30px;
+    border: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin: 5px; 
+}
+
+.pointer {
+    cursor: pointer;
+    background-color: rgba(17, 217, 150, 0.653);
+    color: white;
+    font-weight: bold;
+}
+
+.pointer:hover {
+    background: rgb(34,193,195);
+background: linear-gradient(17deg, rgba(34,193,195,1) 0%, rgba(45,253,142,1) 100%);
+    transform: scale(1.05);
+}
+
+.convHolder {
+    position: absolute;
+    width: 70%;
+    height:70%;
+    left: 1%;
+    top: auto;
+    border-radius: 8px;
+    background-color: #fafafadf;
+    padding-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow-y: scroll;
+}
+
+.conv {
+    display: flex;
+    flex-direction: column;
+}
+
+.recentconv {
+    position: absolute;
+    width: 20%;
+    height:70%;
+    left: 75%;
+    top: auto;
+    border-radius: 8px;
+    background-color: #fafafadf;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#recent {
+    color: white;
+    padding-top: 5%;
+    font-size: 28px;
+    font-weight: bold;
+    top: 0%;
+    left: 0%;
+    background-color: rgba(76, 175, 255, 0.823);
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    height: 10%;
+    border-bottom: 2px solid rgb(255, 255, 255);
+}
+
+#sender {
+    position: absolute;
+    left: 0%;
+    margin-left: 0;
+    margin-bottom: 0;
+    display: flex;
+  }
+  #sender_button {
+    position: absolute;
+    left: 80%;
+    width: 20%;
+    border: none;
+    background-color: rgba(76, 175, 255, 0.823);
+    height: 35px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+  }
+
+#sender_button:hover {
+    background: rgb(34,193,195);
+    background: linear-gradient(28deg, rgba(34,193,195,1) 0%, rgba(45,137,253,1) 100%);
+}
+
+.pp {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: black;
+    margin: 10px;
+}
+
+.profile {
+    background-color:#fafafadf;
+    border: none;
+    border-radius: 8px;
+    width: 25%;
+    /* height: 25%; */
+    margin: 25px;
+    display: flex;
+}
+
+#user {
+    position: absolute;
+    right: 2%;
+    font-weight: bold;
+    top: 5%;
+    cursor: pointer;
+}
+
+.cr {
+    list-style-type: none;
+    display: flex;
+    flex-flow: row wrap;
+    padding: 0;
+}
+
+.cr p {
+    padding-left: 5px;
+    padding-bottom: 5px;
+    width: 90%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.online {
+    background-color: green;
+}
+
+.received {
+    background-color: #e5e5e5df; 
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    left: 0%;
+    padding: 10px;
+    width: fit-content;
+    margin-right: 70%;
+}
+
+.sent {
+    background-color: rgba(76, 174, 255, 0.242);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    right: 0%;
+    padding: 10px;
+    text-align: right;
+    width: auto;
+    margin-left: 70%;
+    display: flex;
+    align-self: flex-end;
+}
+
+#currentDiscussion {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    background-color: rgba(76, 175, 255, 0.823);
+    color: white;
+    font-weight: bold;
+    width: 20%;
+    font-family:Helvetica;
+    letter-spacing: 1px;
+    border-bottom-right-radius: 80px;
+    padding: 10px 10px 5px 10px;
+}
+
+#postcreator {
+    background-color: #e5e5e5; 
+    border-radius: 8px;
+    width: 50vw;
+    padding: 10px;
+    margin: 10px;
+    opacity: 1;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#post_button {
+    background-color: rgba(76, 175, 255, 0.823);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    width: 100px;
+    padding: 5px;
+}
+
+.post_container {
+    background-color: #e5e5e5df; 
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+    width: 60vw;
+    border: 4px solid rgba(76, 175, 255, 0.823);
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    position: relative;
+    flex-direction: column;
+}
+
+.post_username {
+    position:absolute;
+    left: 1%;
+    top: 0%;
+}
+
+.post_date {
+    position:absolute;
+    left: 10%;
+    top: 0%;
+}
+
+.post_title {
+    padding-top: 10px;
+    border-bottom: 1px solid black;
+    width: 60%;
+}
+
+.post_categories {
+    position:absolute;
+    right: 1%;
+    top: 0%;
+    border: 2px solid rgba(45,137,253,1);
+    border-radius: 8px;
+    padding: 2px;
+}
+
+.post_comment {
+    padding-top: 20px;
+    border-top: 1px solid black;
+    width: 60%;
+    padding: 10px;
+}
+
+.response {
+    background-color: transparent;
+    padding: 20px;
+    border:solid gray 1px;
+    width: 50%;
+    height: 15px;
+    border-radius: 0px;
+}
+
+.resp_button {
+    color: white;
+    width: 15%;
+    background-color: gray;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+}
+
+#postList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#app{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post_element{
+    text-align: center;
+}
+#post_content{
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#postSearch{
+    width: 40vw;
+    flex-direction: column;
+    align-items: center;
+}
+#filter_button{
+    width: 100px;
+    height: 30px;
+    background-color: rgba(76, 175, 255, 0.823);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+}
+#search_button{
+    width: 100px;
+    height: max-content;
+    background-color: rgba(76, 175, 255, 0.823);
+    color: white;
+    font-weight: bold;
+    border: 3px solid black;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+}
+.typing-demo {
+    width: 30ch;
+    animation: typing 1.5s infinite;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid;
+    font-family: monospace;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0
+    }
+  }

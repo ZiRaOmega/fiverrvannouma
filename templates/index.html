@@ -1,0 +1,60 @@
+{{define "index"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaPenguinForum</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    {{template "header"}}
+
+    <div id="app">
+    </div>
+
+    <div id="online_users">
+        <ul>
+        {{ range .Users }}
+            <li><a href="javascript:converseWith('{{.Username}}')">{{.Username}}</a></li>
+        {{ end }}
+        </ul>
+    </div>
+
+    {{template "footer"}}
+
+    <script src="../static/js/ws.js"></script>
+    <script type="module">
+        import {default as Index} from "/static/js/views/index.mjs";
+        import {default as Login} from "/static/js/views/login.mjs";
+        import {default as Register} from "/static/js/views/register.mjs";
+        import {default as PM} from "/static/js/views/pm.mjs";
+        import {default as Account} from "/static/js/views/account.mjs";
+
+        import {default as Error404} from "/static/js/views/404.mjs";
+
+        import {default as Router} from "/static/js/router.mjs";
+
+        const routes = {
+            "/": Index,
+            "/login": Login,
+            "/register": Register,
+            "/forum": Index,
+            "/pm": PM,
+            "/account": Account,
+        };
+
+        const root = document.querySelector('#app');
+        const router = new Router(root, routes, Error404);
+        window.router = router;
+
+        window.addEventListener('DOMContentLoaded', router.DOMContentLoadedHandler.bind(router));
+    </script>
+    <script src="/static/js/global.js"></script>
+
+</body>
+</html>
+{{end}}

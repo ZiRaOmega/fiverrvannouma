@@ -1,0 +1,18 @@
+{{define "header"}}
+<div class="header">
+    <div class="header__logo">
+        <a href="/" onclick="router.navigate(event, '/')"><img id="logo" src="/static/img/logo.png"></a>
+    </div>
+    <div class="header__menu">
+        <ul>
+            <li><a href="/login" onclick="router.navigate(event, '/login')">Login</a></li>
+            <li><a href="/register" onclick="router.navigate(event, '/register')">Register</a></li>
+            <li><a href="/forum" onclick="router.navigate(event, '/forum')">Forum</a></li>
+            <li><a href="/pm" onclick="router.navigate(event, '/pm')">PM</a></li>
+            <li><a href="/account" onclick="router.navigate(event, '/account')">Account</a></li>
+        </ul>
+    </div>
+    <a id="logout" href="javascript:logout()">Logout</a>
+    <div id="user" href="/account" onclick="router.navigate(event, '/account')">Guest</div>
+</div>
+{{end}}
