@@ -11,7 +11,9 @@ const login = async(ev) => {
     }).then(r => {
         if (r.status != 200) throw new Error("Wrong username or password.");
         initWebsocket();
-
+        console.log("login")
+        document.getElementById("loginHeader").style.display="none"
+        document.getElementById("registerHeader").style.display="none"
         router.navigate(null, "/forum");
     }).catch(r => {
         alert(r);
@@ -47,6 +49,14 @@ const logout = async (ev) => {
     userss = [];
     currentDiscussion = "";
     await fetch("/api/logout");
+    document.getElementById("loginHeader").style.display="block"
+    document.getElementById("registerHeader").style.display="block"
+
+    clearTimeout(UserLeftHeader)
+    document.getElementById("user").innerText="";
+    console.log("Logout")
+    router.navigate(null, "/forum");
+
 };
 
 const SearchPost = (search) => {

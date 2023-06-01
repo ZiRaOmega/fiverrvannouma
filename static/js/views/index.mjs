@@ -17,6 +17,18 @@ export default {
         </div>`;
     },
     postRender: () => { 
+        
+        let GetCookieValue=(cookieName)=>{
+            let cookieValue = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+            return cookieValue ? cookieValue.pop() : '';
+        }
+        window.GetCookieValue=GetCookieValue;
+        if (GetCookieValue("SESSION_ID")!=''){
+            document.getElementById("loginHeader").style.display="none"
+            document.getElementById("registerHeader").style.display="none"
+        }else{
+            router.navigate(null,"/login")
+        }
         loadPosts(Posts);
         document.querySelector('#post_button').addEventListener('click', function() {
             let title = document.querySelector('#post_title').value;

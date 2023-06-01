@@ -171,6 +171,9 @@ initWebsocket();
 var userss = [];
 
 const GetConversation = (user) => {
+  if (UserConversations == undefined) {
+    return [];
+  }
   return UserConversations.filter((conversation) => {
     return conversation.From === user || conversation.To === user;
   });
@@ -203,9 +206,10 @@ function createList(users) {
 
 
 
-setTimeout(() => {
+let UserLeftHeader=setTimeout(() => {
   document.querySelector("#user").innerText = user.username;
 }, 500);
+window.UserLeftHeader=UserLeftHeader;
 var Counter = 10;
 var FirstLoad = true;
 

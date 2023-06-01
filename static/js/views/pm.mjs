@@ -16,6 +16,17 @@ export default {
         </div>`;
     },
     postRender: () => {
+        let GetCookieValue=(cookieName)=>{
+            let cookieValue = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+            return cookieValue ? cookieValue.pop() : '';
+        }
+        window.GetCookieValue=GetCookieValue;
+        if (GetCookieValue("SESSION_ID")!=''){
+            document.getElementById("loginHeader").style.display="none"
+            document.getElementById("registerHeader").style.display="none"
+        }else{
+            router.navigate(null,"/login")
+        }
         var refresh = false;
         setInterval(() => {
             if (refresh) {
@@ -25,13 +36,14 @@ export default {
             }
         }, 1000);
         var Scrolled = false;
-        document.addEventListener("mousemove", () => {
+        setTimeout(() => {
             if (!refresh) {
                 return;
             }
+            console.log("Timeout")
             const element = document.querySelector('.convHolder');
 
-            element.addEventListener('scroll', function () {
+            if (element!=null) element.addEventListener('scroll', function () {
                 if (element.scrollTop === 0 && !Scrolled && Counter != userMessages.length) {
                     Scrolled = true;
                     console.log('Scrollbar has reached the top!');
@@ -61,7 +73,15 @@ export default {
                 else if (a > b) return -1;
                 else return 0;
             });
-
+            let mapDuplicates = {};
+            userss.forEach((user, i) => {
+                //remove duplicates
+                if (mapDuplicates[user] != undefined) {
+                    userss.splice(i, 1);
+                } else {
+                    mapDuplicates[user] = true;
+                }
+            });
             userss.forEach((item) => {
                 if (item != user.username) {
                     const span = document.createElement("span");
@@ -81,6 +101,7 @@ export default {
                             span.classList.add("online");
                         }
                     }
+                   
                     list.appendChild(span);
                     list.appendChild(user);
                 }
@@ -90,7 +111,7 @@ export default {
                 document.querySelector(".convs").innerHTML = "";
                 document.querySelector(".convs").appendChild(list);
             }
-        });
+        },1000);
 
         let inputsender = document.getElementById("sender");
         inputsender.addEventListener("keyup", function (event) {
@@ -116,6 +137,7 @@ export default {
         createList(UserList);
         setInterval(() => {
             var recents = document.getElementsByClassName("cr")[0];
+            if (recents==null) return
             for (let children of recents.children) {
                 //Get only p elements
                 if (children.tagName == "P") {

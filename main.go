@@ -51,7 +51,7 @@ func main() {
 				Name:     COOKIE_SESSION_NAME,
 				Value:    "",
 				Expires:  time.Unix(0, 0),
-				HttpOnly: true,
+				HttpOnly: false,
 				Path:     "/",
 			})
 		}
@@ -104,7 +104,7 @@ func main() {
 							Name:     COOKIE_SESSION_NAME,
 							Value:    sessionId,
 							Expires:  time.Now().Add(COOKIE_SESSION_DURATION),
-							HttpOnly: true,
+							HttpOnly: false,
 							Path:     "/",
 						})
 
