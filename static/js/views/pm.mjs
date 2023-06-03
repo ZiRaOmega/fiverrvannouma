@@ -1,9 +1,9 @@
 export default {
     render: () => {
         return `<div class="convHolder">
+        <div id="currentDiscussion"></div>
         <div class="conv">
         </div>
-        <div id="currentDiscussion"></div>
         <form id="form-send-message">
         <input id="sender" type="text" placeholder="Send">
         <input type="submit" id="sender_button" value="Envoyer"></input>
@@ -101,7 +101,7 @@ export default {
                             span.classList.add("online");
                         }
                     }
-                   
+
                     list.appendChild(span);
                     list.appendChild(user);
                 }
@@ -153,4 +153,5 @@ export default {
 
         }, 10000);
     },
+    
 };

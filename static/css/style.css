@@ -1,6 +1,6 @@
 :root{
-  --accent: #D84315;
-  --light-accent: #FF8A65;
+  --accent: #707654;
+  --light-accent: #989f76;
 }
 
 * {
@@ -163,6 +163,19 @@ select {
     transform: scale(1.05);
 }
 
+#currentDiscussion {
+    position: fixed;
+    top: 85px;
+    left:15px;
+    background-color: var(--accent);
+    color: white;
+    font-weight: bold;
+    width: 20%;
+    font-family:Helvetica;
+    letter-spacing: 1px;
+    border-bottom-right-radius: 80px;
+    padding: 10px 10px 5px 10px;
+}
 .convHolder {
     position: absolute;
     width: 70%;
@@ -176,8 +189,37 @@ select {
     margin-bottom: 10px;
     overflow-y: scroll;
 }
+#sender {
+    position: fixed;
+    left: 5%;
+    height: 35px;
+    margin-left: 0;
+    margin-bottom: 0;
+    display: flex;
+    width: 48vw;
+}
+#sender_button {
+    position: fixed;
+    left: 55%;
+    width: 10vw;
+    border: none;
+    background-color: var(--accent);
+    height: 35px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px
+}
+
+#sender_button:hover {
+    background: var(--light-accent);
+}
 
 .conv {
+  padding-bottom: 40px; 
   margin: 20px;
     display: flex;
     flex-direction: column;
@@ -209,35 +251,6 @@ select {
     text-align: center;
     height: 10%;
     border-bottom: 2px solid rgb(255, 255, 255);
-}
-
-#sender {
-    position: absolute;
-    left: 5%;
-    height: 35px;
-    margin-left: 0;
-    margin-bottom: 0;
-    display: flex;
-    width: 70%;
-  }
-  #sender_button {
-    position: absolute;
-    left: 75%;
-    width: 20%;
-    border: none;
-    background-color: var(--accent);
-    height: 35px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5px
-  }
-
-#sender_button:hover {
-    background: var(--light-accent);
 }
 
 .pp {
@@ -329,20 +342,6 @@ select {
     margin-left: 70%;
     display: flex;
     align-self: flex-end;
-}
-
-#currentDiscussion {
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    background-color: var(--accent);
-    color: white;
-    font-weight: bold;
-    width: 20%;
-    font-family:Helvetica;
-    letter-spacing: 1px;
-    border-bottom-right-radius: 80px;
-    padding: 10px 10px 5px 10px;
 }
 
 #postcreator {
@@ -504,6 +503,7 @@ select {
   }
 
 #form-send-message{
+  background: #fafafadf;
   width: 100%;
   position: absolute;
   display: flex;
