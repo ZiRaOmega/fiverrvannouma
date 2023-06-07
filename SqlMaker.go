@@ -57,10 +57,13 @@ func sqlMaker(db *sql.DB) {
 	// fmt.Println(CheckPasswordHash("d", HashD), CheckPasswordHash("", HashD))
 }
 
+// Log prints a message to the standard logger. It accepts a variable
+// number of arguments, similar to fmt.Println.
 func Log(texttolog ...interface{}) {
 	log.Println(texttolog...)
 }
 
+// createUserTable creates a new table named "user" if it does not already exist.
 func createUserTable(db *sql.DB) {
 	createUserTableSQL := `CREATE TABLE IF NOT EXISTS user (
 		"idUser" integer NOT NULL PRIMARY KEY AUTOINCREMENT,		
@@ -80,6 +83,7 @@ func createUserTable(db *sql.DB) {
 	statement.Exec() // Execute SQL Statements
 }
 
+// createSessionTable creates a new table named "session" if it does not already exist.
 func createSessionTable(db *sql.DB) {
 	query := `CREATE TABLE IF NOT EXISTS session (
 		"session_id" TEXT NOT NULL PRIMARY KEY,
@@ -93,6 +97,7 @@ func createSessionTable(db *sql.DB) {
 	statement.Exec()
 }
 
+// AddOneComment increments the number of comments for a particular post by 1.
 func AddOneComment(db *sql.DB, idPost int) {
 	go Log("[\033[32m+\033[0m] Adding comment on post with ID :", idPost)
 	AddOneCommentSQL := `UPDATE post SET nbr_comments = nbr_comments + 1 WHERE idPost = ?`
@@ -107,6 +112,7 @@ func AddOneComment(db *sql.DB, idPost int) {
 	}
 }
 
+// createCommentsTable creates a new table named "comments" if it does not already exist.
 func createCommentsTable(db *sql.DB) {
 	createCommentsTableSQL := `CREATE TABLE IF NOT EXISTS comments (
 		"commentID" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -116,13 +122,6 @@ func createCommentsTable(db *sql.DB) {
 		"postID" integer,
 		FOREIGN KEY(postID) REFERENCES post(idPost) 
 	);`
-	// Explain FOREIGN KEY(postID) REFERENCES post(idPost) :
-	// The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
-	// The FOREIGN KEY constraint also prevents invalid data from being inserted into the foreign key column,
-	// because it has to be one of the values contained in the table it points to.
-	// The FOREIGN KEY constraint requires an INDEX on the foreign key columns if the table is to be referenced by other tables.
-	// The FOREIGN KEY constraint requires that the referenced columns are indexed.
-	// The FOREIGN KEY constraint requires that the referenced columns are NOT NULL.
 
 	statement, err := db.Prepare(createCommentsTableSQL) // Prepare SQL Statement
 	if err != nil {
@@ -131,6 +130,7 @@ func createCommentsTable(db *sql.DB) {
 	statement.Exec() // Execute SQL Statements
 }
 
+// createPostTable creates a new table named "post" if it does not already exist.
 func createPostTable(db *sql.DB) {
 	createPostTableSQL := `CREATE TABLE IF NOT EXISTS post (
 		"idPost" integer NOT NULL PRIMARY KEY AUTOINCREMENT,		
@@ -149,6 +149,7 @@ func createPostTable(db *sql.DB) {
 	statement.Exec() // Execute SQL Statements
 }
 
+// createMpTable creates a new table named "mp" if it does not already exist.
 func createMpTable(db *sql.DB) {
 	createMpTableSQL := `CREATE TABLE IF NOT EXISTS mp (
         "sender" TEXT,        
@@ -164,21 +165,7 @@ func createMpTable(db *sql.DB) {
 	statement.Exec() // Execute SQL Statements
 }
 
-/*
-	func createConversationsTable(db *sql.DB) {
-		createConversationsTableSQL := `CREATE TABLE IF NOT EXISTS conversations (
-	        "sender" TEXT,
-	        "receiver" TEXT,
-	        "lastMessage" TEXT
-	      );` // SQL Statement for Create Table
-
-		statement, err := db.Prepare(createConversationsTableSQL) // Prepare SQL Statement
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		statement.Exec() // Execute SQL Statements
-	}
-*/
+// AddComment adds a new comment to the "comments" table.
 func AddComment(db *sql.DB, comment string, usernames string, postID int) {
 	insertSQL := `INSERT INTO comments(comment, username, date, postID) VALUES (?, ?, ?, ?)`
 	statement, err := db.Prepare(insertSQL)
@@ -194,6 +181,7 @@ func AddComment(db *sql.DB, comment string, usernames string, postID int) {
 	}
 }
 
+// RemoveAllLike removes all likes associated with a particular post.
 func RemoveAllLike(db *sql.DB, postID string) {
 	go Log("[\033[31m-\033[0m] Removing like")
 	removeLikeSQL := `DELETE FROM likes WHERE postID = ?`
@@ -208,6 +196,7 @@ func RemoveAllLike(db *sql.DB, postID string) {
 	}
 }
 
+// NoEmptyCategory removes empty categories from a given slice of categories.
 func NoEmptyCategory(categorie []string) (NoEmpty []string) {
 	for i := 0; i < len(categorie); i++ {
 		if categorie[i] != "" && categorie[i] != " " {
@@ -217,6 +206,7 @@ func NoEmptyCategory(categorie []string) (NoEmpty []string) {
 	return NoEmpty
 }
 
+// AddOneLike increments the number of likes for a particular post by 1.
 func AddOneLike(db *sql.DB, idPost int) {
 	go Log("[\033[32m+\033[0m] Adding like on post with ID :", idPost)
 	addOneLikeSQL := `UPDATE post SET nbr_likes = nbr_likes + 1 WHERE idPost = ?`
@@ -231,6 +221,7 @@ func AddOneLike(db *sql.DB, idPost int) {
 	}
 }
 
+// AddOneDisLike increments the number of dislikes for a particular post by 1.
 func AddOneDisLike(db *sql.DB, idPost int) {
 	go Log("[\033[32m+\033[0m] Adding dislike on post with ID :", idPost)
 	addOneLikeSQL := `UPDATE post SET nbr_dislikes = nbr_dislikes + 1 WHERE idPost = ?`
@@ -245,6 +236,7 @@ func AddOneDisLike(db *sql.DB, idPost int) {
 	}
 }
 
+// EditUserEmail edits a user's email address.
 func EditUserEmail(db *sql.DB, name string, newEmail string) {
 	go Log("[\033[33m>\033[0m] Editing user email")
 	editUserEmailSQL := `UPDATE user SET mail = ? WHERE name = ?`
@@ -259,6 +251,7 @@ func EditUserEmail(db *sql.DB, name string, newEmail string) {
 	}
 }
 
+// EditUserPicture edits a user's profile picture.
 func EditUserPicture(db *sql.DB, name string, newPicture string) {
 	go Log("[\033[33m>\033[0m] Editing user profile picture")
 	editUserPictureSQL := `UPDATE user SET profile_picture = ? WHERE name = ?`
@@ -273,6 +266,7 @@ func EditUserPicture(db *sql.DB, name string, newPicture string) {
 	}
 }
 
+// EditUserPassword edits a user's password.
 func EditUserPassword(db *sql.DB, name string, newPassword string) {
 	go Log("[\033[33m>\033[0m] Editing user password")
 	editUserPasswordSQL := `UPDATE user SET password = ? WHERE name = ?`
@@ -287,6 +281,7 @@ func EditUserPassword(db *sql.DB, name string, newPassword string) {
 	}
 }
 
+// displayUsers retrieves and displays all user records from the "user" table.
 func displayUsers(db *sql.DB) {
 	row, err := db.Query("SELECT * FROM user ORDER BY name")
 	if err != nil {
@@ -304,6 +299,7 @@ func displayUsers(db *sql.DB) {
 	}
 }
 
+// displayPosts retrieves and displays all post records from the "post" table.
 func displayPosts(db *sql.DB) {
 	row, err := db.Query("SELECT * FROM post ORDER BY title")
 	if err != nil {
@@ -326,6 +322,7 @@ func displayPosts(db *sql.DB) {
 	}
 }
 
+// displayComments retrieves and displays all comment records from the "comments" table.
 func displayComments(db *sql.DB) {
 	row, err := db.Query("SELECT * FROM comments ORDER BY postID")
 	if err != nil {
@@ -342,6 +339,7 @@ func displayComments(db *sql.DB) {
 	}
 }
 
+// fileExists checks if a file exists in the filesystem.
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
@@ -350,6 +348,7 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
+// getLatestCommentID retrieves the latest comment ID from the "comments" table.
 func getLatestCommentID(db *sql.DB) int {
 	row, err := db.Query("SELECT commentID FROM comments ORDER BY commentID DESC LIMIT 1")
 	if err != nil {
@@ -364,6 +363,7 @@ func getLatestCommentID(db *sql.DB) int {
 	return 0
 }
 
+// IsOnline checks if a user with the given username is currently online.
 func IsOnline(Username string) bool {
 	for k, v := range UserCookie {
 		if k == Username && v.Expires.After(time.Now()) {
@@ -373,6 +373,7 @@ func IsOnline(Username string) bool {
 	return false
 }
 
+// GetAllUsers retrieves all user records from the "user" table and returns them as a slice of User structs.
 func GetAllUsers(db *sql.DB) ([]User, error) {
 	rows, err := db.Query("SELECT name FROM user ORDER BY name")
 	if err != nil {

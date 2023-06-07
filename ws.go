@@ -183,6 +183,8 @@ func MessageHandler(ws *websocket.Conn) {
 		}
 	}
 }
+
+// WsTyping handles the WebSocket event for typing notifications.
 func WsTyping(db *sql.DB, ws *websocket.Conn, msg Message) {
 	var message map[string]interface{} = msg.Message.(map[string]interface{})
 	var to string = message["to"].(string)
@@ -192,16 +194,18 @@ func WsTyping(db *sql.DB, ws *websocket.Conn, msg Message) {
 		From string `json:"from"`
 		To   string `json:"to"`
 	}
-	var tiping Typing
-	tiping.Type = "typing"
-	tiping.From = from
-	tiping.To = to
+	var typing Typing
+	typing.Type = "typing"
+	typing.From = from
+	typing.To = to
 	for client, info := range clients {
 		if info.Username == to {
-			client.WriteJSON(tiping)
+			client.WriteJSON(typing)
 		}
 	}
 }
+
+// WsComment handles the WebSocket event for adding a comment.
 func WsComment(db *sql.DB, ws *websocket.Conn, msg Message) {
 	var mp map[string]interface{} = msg.Message.(map[string]interface{})
 	fmt.Println(mp)
@@ -209,16 +213,17 @@ func WsComment(db *sql.DB, ws *websocket.Conn, msg Message) {
 	Username := mp["username"].(string)
 	postIDStr := mp["postID"].(string)
 
-	postId, err := strconv.Atoi(postIDStr)
+	postID, err := strconv.Atoi(postIDStr)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	fmt.Println(content, Username, postId)
-	AddComment(db, content, Username, postId)
+	fmt.Println(content, Username, postID)
+	AddComment(db, content, Username, postID)
 	WsSynchronizePosts(db, ws)
 }
 
+// WsSynchronizePosts synchronizes posts with the WebSocket client.
 func WsSynchronizePosts(db *sql.DB, ws *websocket.Conn) {
 	type Comment struct {
 		Comment  string `json:"comment"`
@@ -296,6 +301,7 @@ func WsSynchronizePosts(db *sql.DB, ws *websocket.Conn) {
 	ws.WriteJSON(syncPosts)
 }
 
+// WsSynchronizeProfile synchronizes the user profile with the WebSocket client.
 func WsSynchronizeProfile(db *sql.DB, ws *websocket.Conn) {
 	type SyncProfile struct {
 		Username string `json:"username"`
@@ -313,6 +319,7 @@ func WsSynchronizeProfile(db *sql.DB, ws *websocket.Conn) {
 	ws.WriteJSON(syncProfilePacket)
 }
 
+// WsSynchronizeUsers synchronizes the online users with the WebSocket client.
 func WsSynchronizeUsers(db *sql.DB, ws *websocket.Conn) {
 	type OnlineUser struct {
 		Username string `json:"username"`
@@ -336,6 +343,7 @@ func WsSynchronizeUsers(db *sql.DB, ws *websocket.Conn) {
 	}
 }
 
+// WsSynchronizeUserList synchronizes the user list with the WebSocket client.
 func WsSynchronizeUserList(db *sql.DB, ws *websocket.Conn) {
 	type User struct {
 		Username string `json:"username"`
@@ -360,10 +368,11 @@ func WsSynchronizeUserList(db *sql.DB, ws *websocket.Conn) {
 	}
 }
 
+// WsSynchronizeMessages synchronizes the messages with the WebSocket client.
 func WsSynchronizeMessages(db *sql.DB, ws *websocket.Conn, Message Message) {
 	username := clients[ws].Username
 
-	// get all messages from user
+	// Get all messages from the user
 	rows, err := db.Query("SELECT sender, receiver, content, date FROM mp WHERE receiver = ? OR sender = ?", username, username)
 	if err != nil {
 		fmt.Println(err)
@@ -381,7 +390,7 @@ func WsSynchronizeMessages(db *sql.DB, ws *websocket.Conn, Message Message) {
 		}
 		messages = append(messages, userMessage{To: to, From: from, Content: content, Date: date})
 	}
-	// send messages to client
+	// Send messages to the client
 	fmt.Println(messages)
 	ws.WriteJSON(wsSynchronize{Messages: messages, Type: "sync:messages"})
 }
