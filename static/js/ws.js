@@ -360,6 +360,21 @@ function loadPosts(posts) {
   }
 }
 const TypingInProgress=(user)=>{
+  console.log(window.location)
+  if (window.location.pathname!="/pm"){
+    //Create a div that will say user is typing on the bottom right 
+    const typingDiv=document.createElement("div");
+    typingDiv.classList.add("typing_div");
+    typingDiv.innerText=`User ${user} is typing !`
+    //Set the div to the bottom right of the window
+    
+    document.body.appendChild(typingDiv)
+    //Set a timeout then delete the notif
+    setTimeout(()=>{
+      typingDiv.remove()
+      }, 10000)
+    return
+  }
   var recents = document.getElementsByClassName("cr")[0];
   for (let children of recents.children) {
     //Get only p elements

@@ -516,3 +516,13 @@ select {
       width: 0
     }
   }
+.typing_div{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: aliceblue;
+    border-radius: 15%;
+    width: 20vw;
+    height: 30vh;
+
+}
