@@ -362,17 +362,25 @@ function loadPosts(posts) {
 const TypingInProgress=(user)=>{
   console.log(window.location)
   if (window.location.pathname!="/pm"){
+    //Check if there is already a typing_div if yes just change the innerText else do the next
+    if (document.querySelector(".typing_div")!=null){
+      document.querySelector(".typing_div").innerText=`User ${user} is typing !`;
+      }else{
     //Create a div that will say user is typing on the bottom right 
     const typingDiv=document.createElement("div");
     typingDiv.classList.add("typing_div");
     typingDiv.innerText=`User ${user} is typing !`
     //Set the div to the bottom right of the window
-    
+    typingDiv.addEventListener("click",()=>{
+      typingDiv.remove();
+      router.navigate(null,"/pm")
+    })
     document.body.appendChild(typingDiv)
     //Set a timeout then delete the notif
     setTimeout(()=>{
       typingDiv.remove()
       }, 10000)
+    }
     return
   }
   var recents = document.getElementsByClassName("cr")[0];
