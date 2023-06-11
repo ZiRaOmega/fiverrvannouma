@@ -27,6 +27,14 @@ export default {
         }else{
             router.navigate(null,"/login")
         }
+        function getUrlParamValue(paramName) {
+            let url = new URL(window.location.href);
+            let paramValue = url.searchParams.get(paramName);
+            return paramValue;
+        }
+        if (getUrlParamValue("user")!=null){
+            loadConversation(getUrlParamValue("user"))
+        }        
         var refresh = false;
         setInterval(() => {
             if (refresh) {

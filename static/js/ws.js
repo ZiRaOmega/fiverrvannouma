@@ -373,7 +373,7 @@ const TypingInProgress=(user)=>{
     //Set the div to the bottom right of the window
     typingDiv.addEventListener("click",()=>{
       typingDiv.remove();
-      router.navigate(null,"/pm")
+      router.navigate(null,"/pm?user="+user)
     })
     document.body.appendChild(typingDiv)
     //Set a timeout then delete the notif
