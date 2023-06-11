@@ -219,7 +219,7 @@ select {
 }
 
 .conv {
-  padding-bottom: 40px; 
+  padding-bottom: 40px;
   margin: 20px;
     display: flex;
     flex-direction: column;
@@ -517,12 +517,16 @@ select {
     }
   }
 .typing_div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
     position: fixed;
-    bottom: 0;
-    right: 0;
+    top: 90px;
+    right: 10px;
     background-color: aliceblue;
-    border-radius: 15%;
+    border-radius: 10px;
     width: 20vw;
-    height: 30vh;
-
+    height: 5vh;
+    color: var(--light-accent);
+    font-weight: bold;
 }

@@ -160,7 +160,7 @@ const initWebsocket = () => {
         TypingInProgress(message.from)
         console.log(message);
     }
-   
+
   };
 };
 
@@ -240,7 +240,7 @@ function loadConversation(user) {
   }
   var lenmsg = userMessages.length;
   if (lenmsg > 10) {
-    
+
     //Reverse userMessages and get the last 10 messages
     userMessages = userMessages.reverse().slice(0, Counter);
     userMessagesDates = userMessagesDates.reverse().slice(0, Counter);
@@ -364,12 +364,12 @@ const TypingInProgress=(user)=>{
   if (window.location.pathname!="/pm"){
     //Check if there is already a typing_div if yes just change the innerText else do the next
     if (document.querySelector(".typing_div")!=null){
-      document.querySelector(".typing_div").innerText=`User ${user} is typing !`;
+      document.querySelector(".typing_div").innerText=`🔔 ${user} is typing !`;
       }else{
-    //Create a div that will say user is typing on the bottom right 
+    //Create a div that will say user is typing on the bottom right
     const typingDiv=document.createElement("div");
     typingDiv.classList.add("typing_div");
-    typingDiv.innerText=`User ${user} is typing !`
+    typingDiv.innerText=`🔔 ${user} is typing !`
     //Set the div to the bottom right of the window
     typingDiv.addEventListener("click",()=>{
       typingDiv.remove();
@@ -397,6 +397,6 @@ const TypingInProgress=(user)=>{
         children.classList.add("typing-demo");
       }
     }
-      
+
   }
 }
