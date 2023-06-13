@@ -3,10 +3,12 @@ package main
 // This line declares the package that this file is a part of. In Go, every file must declare a package. The main package is special in Go. It defines a standalone executable program, not a library.
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	// Importing necessary packages for this program
@@ -85,32 +87,70 @@ func main() {
 		age := r.FormValue("age")
 		gender := r.FormValue("gender")
 		password := r.FormValue("password")
-		// Reading the values from the form submitted by the user.
 
-		allFilled := true
-		for _, s := range []string{username, firstname, lastname, email, age, gender, password} {
-			if s == "" {
-				allFilled = false
-			}
-		}
-		// Checking if all fields are filled.
+		// Validate all user-submitted fields
 
-		if allFilled {
-			hashedPassword, _ := HashPassword(password)
-			// Hashing the user's password for secure storage.
-
-			GetDB().Exec(
-				"INSERT INTO user (name, mail, age, gender, firstname, lastname, password) VALUES (?,?,?,?,?,?,?)",
-				username, email, age, gender, firstname, lastname, hashedPassword)
-			// Inserting the new user into the database.
-
-			w.WriteHeader(http.StatusOK)
-			// Sending a 200 OK status code to the client.
+		// Validate username
+		if !ValidUsername(username) {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "username is invalid",
+			})
 			return
 		}
 
-		w.WriteHeader(http.StatusUnauthorized)
-		// If not all fields are filled, sending a 401 Unauthorized status code to the client.
+		// Validate first name and last name
+		if strings.TrimSpace(firstname) == "" || strings.ContainsAny(firstname, " ") || strings.TrimSpace(lastname) == "" || strings.ContainsAny(firstname, " ") {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "first name or last name is invalid",
+			})
+			return
+		}
+
+		// Validate email
+		if !ValidEmail(email) {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "email is invalid",
+			})
+			return
+		}
+
+		// Validate age
+		if !ValidAge(age) {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "age must be between 10 included and 99 included",
+			})
+			return
+		}
+
+		// Validate password
+		if len(password) < 8 {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "password must be greater than 8 characters",
+			})
+			return
+		}
+
+		// Validate gender
+		if !(gender == "male" || gender == "female" || gender == "undefined") {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "gender must be male, female or undefined",
+			})
+			return
+		}
+
+		// Hash password for secure storage
+		hashedPassword, _ := HashPassword(password)
+
+		// Inserting the new user into the database.
+		GetDB().Exec(
+			"INSERT INTO user (name, mail, age, gender, firstname, lastname, password) VALUES (?,?,?,?,?,?,?)",
+			username, email, age, gender, firstname, lastname, hashedPassword)
 	})
 
 	http.HandleFunc("/api/login", func(w http.ResponseWriter, r *http.Request) {

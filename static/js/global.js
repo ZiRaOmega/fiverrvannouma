@@ -40,11 +40,13 @@ const register = async (ev) => {
     await fetch("/api/register", {
         method: "post",
         body: formData,
-    }).then(r => {
-        if (r.status != 200) throw new Error("Something went wrong.");
-
-        // Navigate to the login page
-        router.navigate(null, "/login");
+    }).then(async r => {
+        if (r.status == 422) {
+            let e = await r.json().then(d => d.error);
+            throw new Error(e);
+        }
+        else if (r.status == 200) router.navigate(null, "/login");
+        else throw new Error("Something went badly wrong.");
     }).catch(r => {
         alert(r);
         return r;
