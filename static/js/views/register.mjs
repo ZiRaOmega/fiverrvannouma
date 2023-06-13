@@ -1,6 +1,6 @@
 export default {
-    render: () => {
-        return `<div class="popup">
+  render: () => {
+    return `<div class="popup">
                 <form id="form-register">
                 <label for="username">Username</label>
                 <br>
@@ -20,7 +20,7 @@ export default {
                 <br>
                 <label for="age">Age</label>
                 <br>
-                <input id="age" type="number" name="age" placeholder="10" min="10">
+                <input id="age" type="number" name="age" placeholder="10" min="10" max="99" value="10">
                 <br>
                 <label for="gender">Gender</label>
                 <br>
@@ -37,9 +37,10 @@ export default {
                 <input id="registersubmit" type="submit" class="pointer" value="Register">
                 </form>
                 </div>`;
-    },
-    postRender: () => {
-        document.querySelector('#form-register')
-            .addEventListener('submit', (ev) => register(ev));
-    },
-} 
+  },
+  postRender: () => {
+    document
+      .querySelector("#form-register")
+      .addEventListener("submit", (ev) => register(ev));
+  },
+};
