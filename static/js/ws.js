@@ -158,7 +158,7 @@ const initWebsocket = () => {
         break;
       case "typing":
         TypingInProgress(message.from);
-        console.log(message,"TYPING");
+        console.log(message, "TYPING");
     }
   };
 };
@@ -197,11 +197,11 @@ const GetLastMessage = (user) => {
 
 function createList(users) {
   userss = [];
-  let mapDuplicates = {}
+  let mapDuplicates = {};
   users.forEach((item) => {
-    if (mapDuplicates[item.username]!=true){
+    if (mapDuplicates[item.username] != true) {
       userss.push(item.username);
-      mapDuplicates[item.username]=true
+      mapDuplicates[item.username] = true;
     }
   });
   //document.querySelector(".convs").appendChild(list);
@@ -371,12 +371,19 @@ function loadPosts(posts) {
     });
   }
 }
+
+let typingUsers = {};
+let oldTypingUsers = {};
+
 const TypingInProgress = (user) => {
   console.log(window.location);
+
+  typingUsers[user] = true;
+
   if (window.location.pathname != "/pm") {
     //Check if there is already a typing_div if yes just change the innerText else do the next
     if (document.querySelector(".typing_div") != null) {
-      console.log("lllll")
+      console.log("lllll");
       document.querySelector(
         ".typing_div"
       ).innerText = `🔔 ${user} is typing !`;
@@ -398,21 +405,7 @@ const TypingInProgress = (user) => {
     }
     return;
   }
-  var recents = document.getElementsByClassName("cr")[0];
-  for (let children of recents.children) {
-    //Get only p elements
-    if (children.tagName == "P") {
-      let splitted = children.innerText.replace(" ", "").split("-");
-      console.log(splitted, user);
-      if (splitted[0] == user) {
-        if (children.innerText.includes("Typing...")) {
-          return;
-        }
-        children.innerText += " - Typing...";
-        children.classList.add("typing-demo");
-      }
-    }
-  }
+
   const list = document.createElement("ul");
   document.querySelector(".convs").innerHTML = "";
   userss.sort((a, b) => {
@@ -424,6 +417,7 @@ const TypingInProgress = (user) => {
     else if (a > b) return -1;
     else return 0;
   });
+
   let mapDuplicates = {};
   userss.forEach((user, i) => {
     //remove duplicates
@@ -433,10 +427,11 @@ const TypingInProgress = (user) => {
       mapDuplicates[user] = true;
     }
   });
-  console.log(userss)
+
+  console.log(userss);
   userss.forEach((item) => {
     if (item != localStorage.getItem("username")) {
-      console.log(item ,user.username);
+      console.log(item, user.username);
       const span = document.createElement("span");
       const usersss = document.createElement("p");
       usersss.addEventListener("click", function () {
@@ -445,7 +440,17 @@ const TypingInProgress = (user) => {
       usersss.textContent = item;
       const lastMessage = GetLastMessage(item);
       if (lastMessage != null) {
-        usersss.textContent += " - " + lastMessage.Content;
+        if (!oldTypingUsers[item]) {
+          usersss.classList.add("typing-demo");
+          setTimeout(() => usersss.classList.remove("typing-demo"), 1500);
+          oldTypingUsers[item] = true;
+        }
+
+        if (typingUsers[item]) {
+          usersss.textContent += " is typing...";
+        } else {
+          usersss.textContent += " - " + lastMessage.Content;
+        }
       }
       span.classList.add("dot");
       list.classList.add("cr");
@@ -459,6 +464,7 @@ const TypingInProgress = (user) => {
       list.appendChild(usersss);
     }
   });
+
   refresh = false;
   if (document.querySelector(".convs") != null) {
     document.querySelector(".convs").innerHTML = "";
@@ -467,6 +473,7 @@ const TypingInProgress = (user) => {
 
   delayFunc();
 };
+
 let timeoutId = null;
 let startTime = null;
 
