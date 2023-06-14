@@ -13,7 +13,7 @@ export default {
         <input id="post_title" class="post_element" type="text" placeholder="Title">
         <input id="post_categories" class="post_element" type="text" placeholder="Categories">
         <textarea id="post_content" class="post_element" type="text" placeholder="Content"></textarea>
-        <button id="post_button">Créer</button>
+        <button id="post_button">Create</button>
         </div>`;
     },
     postRender: () => { 
@@ -34,6 +34,34 @@ export default {
             let title = document.querySelector('#post_title').value;
             let content = document.querySelector('#post_content').value;
             let categories = document.querySelector('#post_categories').value;
+            //Regex for special characters
+            let special =   /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+            if (special.test(title) || special.test(content) || special.test(categories)) {
+                alert("Special characters are not allowed");
+                let specinter=setInterval(()=>{
+                    if (document.location.pathname!="/forum"){
+                        clearInterval(specinter);
+                    }else{
+
+                        let title = document.querySelector('#post_title').value;
+                let content = document.querySelector('#post_content').value;
+                let categories = document.querySelector('#post_categories').value;
+                        console.log(!(special.test(title) || special.test(content) || special.test(categories)))
+                        if (!(special.test(title) || special.test(content) || special.test(categories))) {
+                            document.querySelector('#post_button').disabled = false;
+                            clearInterval(specinter);
+    
+                            } else {
+                                document.querySelector('#post_button').disabled = true;
+                            }
+                    }
+
+
+
+                },1000)
+                document.querySelector('#post_button').disabled = true;
+                return;
+            }
             if (title != "" && content != "" && categories != "") {
                 //Wait 500ms to avoid spamming
                 setTimeout(function() {
@@ -74,18 +102,41 @@ export default {
         console.log(respButtons);
 
         respButtons.forEach(function(respButton) {
-          respButton.addEventListener('click', function() {
-            const postDiv = respButton.closest('.post_container');
-            const postCommentResponse = postDiv.querySelector('.response');
-            const postId = postDiv.querySelector('.post_id');
-    
-            const commentResponseValue = postCommentResponse.value;
-            const postIdValue = postId.value;
-    
-            AddComment(commentResponseValue, postIdValue);
-          });
+            respButton.addEventListener('click', function() {
+                const postDiv = respButton.closest('.post_container');
+                const postCommentResponse = postDiv.querySelector('.response');
+                const postId = postDiv.querySelector('.post_id');
+                const postIdValue = postId.value;
+        
+                //Regex for special characters
+                let special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+                let commentResponseValue = postCommentResponse.value;
+                console.log(special.test(commentResponseValue),"specialtest")
+                
+                if (special.test(commentResponseValue)) {
+                    alert("Special characters are not allowed");
+                    
+                    let specinter=setInterval(()=>{
+                        console.log("SpecialInter");
+                        if (document.location.pathname != "/forum"){
+                            clearInterval(specinter);
+                        } else {
+                            // Obtain the current value of the comment inside the interval
+                            commentResponseValue = postCommentResponse.value;
+                            if (!special.test(commentResponseValue)) {
+                                respButton.disabled = false;
+                                clearInterval(specinter);
+                            } else {
+                                respButton.disabled = true;
+                            }
+                        }
+                    }, 1000);
+                } else {
+                    //AddComment(commentResponseValue, postIdValue);
+                }
+            });
         });
-        var filter_button = document.querySelector('#filter_button');
+               var filter_button = document.querySelector('#filter_button');
         filter_button.addEventListener('click', function() {
             var postSearch = document.querySelector('#postSearch');
             if (postSearch.hidden) {

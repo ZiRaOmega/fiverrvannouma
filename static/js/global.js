@@ -16,11 +16,12 @@ const login = async (ev) => {
         initWebsocket();
 
         console.log("login");
-
         // Hide the login and register headers
         document.getElementById("loginHeader").style.display = "none";
         document.getElementById("registerHeader").style.display = "none";
-
+        document.getElementById("logout").style.display="block"
+        //Add To localstorage the username
+        localStorage.setItem("username", formData.get("username"));
         // Navigate to the forum page
         router.navigate(null, "/forum");
     }).catch(r => {
@@ -28,14 +29,21 @@ const login = async (ev) => {
         return r;
     });
 };
-
+let vartest;
 // Register function that handles the registration form submission
 const register = async (ev) => {
     ev.preventDefault();
-
+    //Handle fake email using regex
+    vartest=ev;
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    const email = ev.target.elements['email'].value;
+    if (!emailRegex.test(email)) {
+        alert('Please enter a valid email.');
+        return;
+    }
     const form = ev.target;
     const formData = new FormData(form);
-
+    console.log(formData)
     // Send a registration request to the server
     await fetch("/api/register", {
         method: "post",
@@ -45,7 +53,13 @@ const register = async (ev) => {
             let e = await r.json().then(d => d.error);
             throw new Error(e);
         }
-        else if (r.status == 200) router.navigate(null, "/login");
+        else if (r.status == 200) {
+            let notif = document.createElement("div")
+            notif.className="alert alert-success"
+            notif.innerText=`You have successfully registered! You can now login !`;
+            document.body.appendChild(notif);
+            router.navigate(null, "/login");
+        }
         else throw new Error("Something went badly wrong.");
     }).catch(r => {
         alert(r);
@@ -71,7 +85,7 @@ const logout = async (ev) => {
     // Show the login and register headers
     document.getElementById("loginHeader").style.display = "block";
     document.getElementById("registerHeader").style.display = "block";
-
+    document.getElementById("logout").style.display="none"
     clearTimeout(UserLeftHeader);
     document.getElementById("user").innerText = "";
     console.log("Logout");

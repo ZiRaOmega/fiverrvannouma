@@ -229,6 +229,7 @@ select {
     position: absolute;
     width: 20%;
     height:70%;
+    overflow-y: scroll;
     left: 75%;
     top: auto;
     border-radius: 8px;
@@ -453,7 +454,31 @@ select {
 .post_element{
     text-align: center;
 }
-
+.alert-success{
+    position: fixed !important;
+    top :3% ;
+    right: 0!important;
+    z-index:999999999999999;
+    animation: slide 2s forwards;
+    animation-delay: 0.5s;
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px black;
+    animation: fadeout-right 2s forwards;
+    animation-delay: 3s;
+}
+@keyframes fadeout-right {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+}
 #post_content{
 
     width: 39vw;
@@ -465,6 +490,7 @@ select {
     display: flex;
     flex-direction: column;
     align-items: center;
+    resize: none;
 }
 #postSearch{
     width: 40vw;

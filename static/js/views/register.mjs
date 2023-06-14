@@ -41,6 +41,9 @@ export default {
   postRender: () => {
     document
       .querySelector("#form-register")
-      .addEventListener("submit", (ev) => register(ev));
+      .addEventListener("submit", (ev) => {
+        console.log(ev);
+        register(ev)
+      });
   },
 };

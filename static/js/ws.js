@@ -40,7 +40,7 @@ const sendPrivateMessage = (message, recipient) => {
         content: message,
         date: Date.now().toString(),
       },
-    }),
+    })
   );
 };
 const SendTypingInProgress = (recipient) => {
@@ -51,7 +51,7 @@ const SendTypingInProgress = (recipient) => {
         from: user.username,
         to: recipient,
       },
-    }),
+    })
   );
 };
 const CreatePost = (title, content, categories) => {
@@ -65,7 +65,7 @@ const CreatePost = (title, content, categories) => {
         content: content,
         categories: categories,
       },
-    }),
+    })
   );
 };
 const AddComment = (content, postID) => {
@@ -78,7 +78,7 @@ const AddComment = (content, postID) => {
         postID: postID,
       },
       username: user.username,
-    }),
+    })
   );
 };
 const synchronizeProfile = () => {
@@ -108,7 +108,7 @@ const AutoScrollMessages = () => {
     var conv = document.getElementsByClassName("convHolder")[0];
     conv.scrollTop = conv.scrollHeight;
   }
-}
+};
 const initWebsocket = () => {
   if (websocket && websocket.readyState == WebSocket.OPEN) {
     console.error("already connected");
@@ -135,7 +135,7 @@ const initWebsocket = () => {
       case "sync:messages":
         console.log(message.Messages);
         UserConversations = message.Messages;
-        console.log('conv')
+        console.log("conv");
         loadConversation(currentDiscussion);
         setTimeout(() => {
           AutoScrollMessages();
@@ -157,10 +157,9 @@ const initWebsocket = () => {
         loadPosts(Posts);
         break;
       case "typing":
-        TypingInProgress(message.from)
-        console.log(message);
+        TypingInProgress(message.from);
+        console.log(message,"TYPING");
     }
-
   };
 };
 
@@ -198,28 +197,30 @@ const GetLastMessage = (user) => {
 
 function createList(users) {
   userss = [];
+  let mapDuplicates = {}
   users.forEach((item) => {
-    userss.push(item.username);
+    if (mapDuplicates[item.username]!=true){
+      userss.push(item.username);
+      mapDuplicates[item.username]=true
+    }
   });
   //document.querySelector(".convs").appendChild(list);
 }
 
-
-
-let UserLeftHeader=setTimeout(() => {
+let UserLeftHeader = setTimeout(() => {
   document.querySelector("#user").innerText = user.username;
 }, 500);
-window.UserLeftHeader=UserLeftHeader;
+window.UserLeftHeader = UserLeftHeader;
 var Counter = 10;
 var FirstLoad = true;
 
-console.log(FirstLoad)
+console.log(FirstLoad);
 let userMessages = [];
 let userMessagesDates = [];
 function loadConversation(user) {
   userMessages = [];
   userMessagesDates = [];
-  if (user!=currentDiscussion) {
+  if (user != currentDiscussion) {
     Counter = 10;
     FirstLoad = true;
   }
@@ -240,12 +241,11 @@ function loadConversation(user) {
   }
   var lenmsg = userMessages.length;
   if (lenmsg > 10) {
-
     //Reverse userMessages and get the last 10 messages
     userMessages = userMessages.reverse().slice(0, Counter);
     userMessagesDates = userMessagesDates.reverse().slice(0, Counter);
-    console.log(userMessages)
-    console.log(lenmsg)
+    console.log(userMessages);
+    console.log(lenmsg);
     //Reverse userMessages again to get the correct order
     userMessages = userMessages.reverse();
     userMessagesDates = userMessagesDates.reverse();
@@ -267,7 +267,7 @@ function loadConversation(user) {
       p.classList.add("received");
     }
     p.innerText = userMessages[j].Content;
-    console.log(userMessagesDates[j]);
+    console.log(userMessages[j]);
     const date = new Date(Number(userMessagesDates[j]));
     const dateString = date.toLocaleString();
     p2.innerText = dateString;
@@ -300,21 +300,33 @@ function loadPosts(posts) {
     let response = document.createElement("input");
     let postID = document.createElement("input");
     let resp_button = document.createElement("button");
-    resp_button.innerText = "Send"
-    resp_button.classList.add("resp_button")
-    resp_button.addEventListener('click', function() {
-      const postDiv = resp_button.closest('.post_container');
-      const postCommentResponse = postDiv.querySelector('.response');
-      const postId = postDiv.querySelector('.post_id');
+    resp_button.innerText = "Send";
+    resp_button.classList.add("resp_button");
+    resp_button.addEventListener("click", function () {
+      const postDiv = resp_button.closest(".post_container");
+      let postCommentResponse = postDiv.querySelector(".response");
+      const postId = postDiv.querySelector(".post_id");
 
       const commentResponseValue = postCommentResponse.value;
       const postIdValue = postId.value;
 
-      AddComment(commentResponseValue, postIdValue);
+      postCommentResponse = postDiv.querySelector(".response");
+      //Regex for special characters
+      special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+      //commentResponseValue = postCommentResponse.value;
+      console.log(special.test(commentResponseValue), "specialtest");
+
+      if (special.test(commentResponseValue)) {
+        alert("Special characters are not allowed");
+        postCommentResponse.value = "";
+      } else {
+        AddComment(commentResponseValue, postIdValue);
+      }
     });
-    response.placeholder = "Comment"
-    response.classList.add("post_comment")
-    response.classList.add("response")
+
+    response.placeholder = "Comment";
+    response.classList.add("post_comment");
+    response.classList.add("response");
     title.innerHTML = posts[i].title;
     username.innerHTML = posts[i].username;
     postDate = new Date(Number(posts[i].date)).toUTCString();
@@ -359,44 +371,119 @@ function loadPosts(posts) {
     });
   }
 }
-const TypingInProgress=(user)=>{
-  console.log(window.location)
-  if (window.location.pathname!="/pm"){
+const TypingInProgress = (user) => {
+  console.log(window.location);
+  if (window.location.pathname != "/pm") {
     //Check if there is already a typing_div if yes just change the innerText else do the next
-    if (document.querySelector(".typing_div")!=null){
-      document.querySelector(".typing_div").innerText=`🔔 ${user} is typing !`;
-      }else{
-    //Create a div that will say user is typing on the bottom right
-    const typingDiv=document.createElement("div");
-    typingDiv.classList.add("typing_div");
-    typingDiv.innerText=`🔔 ${user} is typing !`
-    //Set the div to the bottom right of the window
-    typingDiv.addEventListener("click",()=>{
-      typingDiv.remove();
-      router.navigate(null,"/pm?user="+user)
-    })
-    document.body.appendChild(typingDiv)
-    //Set a timeout then delete the notif
-    setTimeout(()=>{
-      typingDiv.remove()
-      }, 10000)
+    if (document.querySelector(".typing_div") != null) {
+      console.log("lllll")
+      document.querySelector(
+        ".typing_div"
+      ).innerText = `🔔 ${user} is typing !`;
+    } else {
+      //Create a div that will say user is typing on the bottom right
+      const typingDiv = document.createElement("div");
+      typingDiv.classList.add("typing_div");
+      typingDiv.innerText = `🔔 ${user} is typing !`;
+      //Set the div to the bottom right of the window
+      typingDiv.addEventListener("click", () => {
+        typingDiv.remove();
+        router.navigate(null, "/pm?user=" + user);
+      });
+      document.body.appendChild(typingDiv);
+      //Set a timeout then delete the notif
+      setTimeout(() => {
+        typingDiv.remove();
+      }, 10000);
     }
-    return
+    return;
   }
   var recents = document.getElementsByClassName("cr")[0];
   for (let children of recents.children) {
     //Get only p elements
     if (children.tagName == "P") {
       let splitted = children.innerText.replace(" ", "").split("-");
-      console.log(splitted,user)
+      console.log(splitted, user);
       if (splitted[0] == user) {
         if (children.innerText.includes("Typing...")) {
-          return
+          return;
         }
         children.innerText += " - Typing...";
         children.classList.add("typing-demo");
       }
     }
-
   }
+  const list = document.createElement("ul");
+  document.querySelector(".convs").innerHTML = "";
+  userss.sort((a, b) => {
+    a = GetLastMessage(a) || 0;
+    b = GetLastMessage(b) || 0;
+    if (typeof a !== "number") a = parseInt(a.Date);
+    if (typeof b !== "number") b = parseInt(b.Date);
+    if (a < b) return 1;
+    else if (a > b) return -1;
+    else return 0;
+  });
+  let mapDuplicates = {};
+  userss.forEach((user, i) => {
+    //remove duplicates
+    if (mapDuplicates[user] != undefined || user.username == user) {
+      userss.splice(i, 1);
+    } else {
+      mapDuplicates[user] = true;
+    }
+  });
+  console.log(userss)
+  userss.forEach((item) => {
+    if (item != localStorage.getItem("username")) {
+      console.log(item ,user.username);
+      const span = document.createElement("span");
+      const usersss = document.createElement("p");
+      usersss.addEventListener("click", function () {
+        loadConversation(item);
+      });
+      usersss.textContent = item;
+      const lastMessage = GetLastMessage(item);
+      if (lastMessage != null) {
+        usersss.textContent += " - " + lastMessage.Content;
+      }
+      span.classList.add("dot");
+      list.classList.add("cr");
+      for (let i = 0; i < UsersOnline.length; i++) {
+        if (UsersOnline[i].username == item) {
+          span.classList.add("online");
+        }
+      }
+
+      list.appendChild(span);
+      list.appendChild(usersss);
+    }
+  });
+  refresh = false;
+  if (document.querySelector(".convs") != null) {
+    document.querySelector(".convs").innerHTML = "";
+    document.querySelector(".convs").appendChild(list);
+  }
+
+  delayFunc();
+};
+let timeoutId = null;
+let startTime = null;
+
+function delayFunc() {
+  if (timeoutId !== null) {
+    let elapsedTime = Date.now() - startTime;
+    let remainingTime = 3000 - elapsedTime;
+    console.log(
+      "The function is already running. Remaining time: " + remainingTime + "ms"
+    );
+    return remainingTime;
+  }
+
+  startTime = Date.now();
+  timeoutId = setTimeout(function () {
+    console.log("3 seconds have passed");
+    timeoutId = null;
+    startTime = null;
+  }, 3000);
 }
