@@ -441,15 +441,23 @@ const TypingInProgress = (user) => {
       const lastMessage = GetLastMessage(item);
       if (lastMessage != null) {
         if (!oldTypingUsers[item]) {
-          usersss.classList.add("typing-demo");
-          setTimeout(() => usersss.classList.remove("typing-demo"), 1500);
+          if (typingUsers[item]){
+
+            usersss.classList.add("typing-demo");
+            setTimeout(() => {
+              usersss.classList.remove("typing-demo")
+              typingUsers[item]=false
+              usersss.textContent = item+" - " + lastMessage.Content;
+
+            }, 1500);
+          }
           oldTypingUsers[item] = true;
         }
 
         if (typingUsers[item]) {
           usersss.textContent += " is typing...";
         } else {
-          usersss.textContent += " - " + lastMessage.Content;
+          usersss.textContent = item+" - " + lastMessage.Content;
         }
       }
       span.classList.add("dot");
@@ -471,7 +479,7 @@ const TypingInProgress = (user) => {
     document.querySelector(".convs").appendChild(list);
   }
 
-  delayFunc();
+  //delayFunc();
 };
 
 let timeoutId = null;
