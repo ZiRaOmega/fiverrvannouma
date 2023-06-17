@@ -104,6 +104,8 @@ const synchronizeUserList = () => {
   websocket.send(message.stringify());
 };
 const AutoScrollMessages = () => {
+    //Delay the func if the delay is not finish stop the func 
+    if (delayFunc(3000) > 0) return;
   if (document.getElementsByClassName("convHolder")[0] != null) {
     var conv = document.getElementsByClassName("convHolder")[0];
     conv.scrollTop = conv.scrollHeight;
@@ -488,10 +490,10 @@ const TypingInProgress = (user) => {
 let timeoutId = null;
 let startTime = null;
 
-function delayFunc() {
+function delayFunc(timeout) {
   if (timeoutId !== null) {
     let elapsedTime = Date.now() - startTime;
-    let remainingTime = 3000 - elapsedTime;
+    let remainingTime = timeout - elapsedTime;
     console.log(
       "The function is already running. Remaining time: " + remainingTime + "ms"
     );
@@ -503,5 +505,5 @@ function delayFunc() {
     console.log("3 seconds have passed");
     timeoutId = null;
     startTime = null;
-  }, 3000);
+  }, timeout);
 }
