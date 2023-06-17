@@ -16,6 +16,23 @@ export default {
         </div>`;
     },
     postRender: () => {
+        function throttleScroll(callback, delay) {
+            let isThrottled = false;
+            let timeoutId = null;
+          
+            function throttledScroll() {
+              if (!isThrottled) {
+                callback();
+                isThrottled = true;
+                timeoutId = setTimeout(() => {
+                  isThrottled = false;
+                  clearTimeout(timeoutId);
+                }, delay);
+              }
+            }
+          
+            return throttledScroll;
+          }
         let GetCookieValue=(cookieName)=>{
             let cookieValue = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
             return cookieValue ? cookieValue.pop() : '';
@@ -51,26 +68,29 @@ export default {
             }
             console.log("inter2")
             console.log("Timeout")
-            const element = document.querySelector('.convHolder');
-
-            if (element!=null) element.addEventListener('scroll', function () {
-                if (element.scrollTop === 0 && !Scrolled && Counter != userMessages.length) {
-                    Scrolled = true;
-                    console.log('Scrollbar has reached the top!');
-                    const scrollHeight = element.scrollHeight;
-                    setTimeout(() => {
-                        loadConversation(currentDiscussion);
-                        element.scrollTop = element.scrollHeight - scrollHeight - (Counter / 10 / scrollHeight) + 20;
-                        Scrolled = false;
-                    }, 50);
-                    //loadConversation(currentDiscussion);
-
+            const throttledScroll = throttleScroll(() => {
+                const element = document.querySelector('.convHolder');
+                if (!Scrolled && element.scrollTop === 0 && Counter != userMessages.length) {
+                  Scrolled = true;
+                  console.log('Scrollbar has reached the top!');
+                  const scrollHeight = element.scrollHeight;
+                  setTimeout(() => {
+                    loadConversation(currentDiscussion);
+                    element.scrollTop = element.scrollHeight - scrollHeight - (Counter / 10 / scrollHeight) + 20;
+                    Scrolled = false;
+                  }, 50);
                 } else if (Counter == userMessages.length) {
-                    setTimeout(() => {
-                        loadConversation(currentDiscussion);
-                    }, 50);
+                  setTimeout(() => {
+                    loadConversation(currentDiscussion);
+                  }, 50);
                 }
-            });
+              }, 3000); // Adjust the delay (in milliseconds) as per your requirements
+          
+              // Add event listener for scroll event
+              const element = document.querySelector('.convHolder');
+              if (element) {
+                element.addEventListener('scroll', throttledScroll);
+              }
             var crs = document.getElementsByClassName("cr");
             const list = document.createElement("ul");
 
@@ -196,6 +216,7 @@ export default {
                     const span = document.createElement("span");
                     const user = document.createElement("p");
                     user.addEventListener("click", function () {
+                        
                         loadConversation(item);
                     });
                     user.textContent = item;

@@ -105,7 +105,7 @@ const synchronizeUserList = () => {
 };
 const AutoScrollMessages = () => {
   //Delay the func if the delay is not finish stop the func
-  if (delayFunc(3000) > 0) return;
+  //if (delayFunc(3000) > 0) return;
   if (document.getElementsByClassName("convHolder")[0] != null) {
     var conv = document.getElementsByClassName("convHolder")[0];
     conv.scrollTop = conv.scrollHeight;
@@ -279,6 +279,8 @@ function loadConversation(user) {
     }
   }
   if (FirstLoad) {
+    //Delay the func if the delay is not finish stop the func
+  //if (delayFunc(3000) > 0) return;
     AutoScrollMessages();
     FirstLoad = false;
   }
@@ -510,4 +512,5 @@ function delayFunc(timeout) {
     timeoutId = null;
     startTime = null;
   }, timeout);
+  return 0;
 }

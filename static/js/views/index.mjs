@@ -155,5 +155,7 @@ export default {
                 postSearch.style.display = "none";
             }
         });
+        //ForumFirstLoad=true;
     },
+    
 }
