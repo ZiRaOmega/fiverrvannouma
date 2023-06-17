@@ -521,7 +521,7 @@ select {
 }
 .typing-demo {
     width: 30ch;
-    animation: typing 1.5s 1;
+    animation: typing 1.5s infinite;
     white-space: nowrap;
     overflow: hidden;
     border-right: 3px solid;

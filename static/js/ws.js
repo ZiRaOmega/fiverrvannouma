@@ -379,7 +379,7 @@ const TypingInProgress = (user) => {
   console.log(window.location);
 
   typingUsers[user] = true;
-
+  oldTypingUsers[user]=false;
   if (window.location.pathname != "/pm") {
     //Check if there is already a typing_div if yes just change the innerText else do the next
     if (document.querySelector(".typing_div") != null) {
@@ -448,17 +448,20 @@ const TypingInProgress = (user) => {
               usersss.classList.remove("typing-demo")
               typingUsers[item]=false
               usersss.textContent = item+" - " + lastMessage.Content;
+              console.log("Debug setTimeout")
 
-            }, 1500);
+            }, 5000);
           }
           oldTypingUsers[item] = true;
-        }
+        
 
         if (typingUsers[item]) {
           usersss.textContent += " is typing...";
+          console.log("Debug condition")
         } else {
           usersss.textContent = item+" - " + lastMessage.Content;
         }
+      }
       }
       span.classList.add("dot");
       list.classList.add("cr");
