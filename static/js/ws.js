@@ -104,8 +104,8 @@ const synchronizeUserList = () => {
   websocket.send(message.stringify());
 };
 const AutoScrollMessages = () => {
-    //Delay the func if the delay is not finish stop the func 
-    if (delayFunc(3000) > 0) return;
+  //Delay the func if the delay is not finish stop the func
+  if (delayFunc(3000) > 0) return;
   if (document.getElementsByClassName("convHolder")[0] != null) {
     var conv = document.getElementsByClassName("convHolder")[0];
     conv.scrollTop = conv.scrollHeight;
@@ -385,7 +385,7 @@ const TypingInProgress = (user) => {
   console.log(window.location);
 
   typingUsers[user] = true;
-  oldTypingUsers[user]=false;
+  oldTypingUsers[user] = false;
   if (window.location.pathname != "/pm") {
     //Check if there is already a typing_div if yes just change the innerText else do the next
     if (document.querySelector(".typing_div") != null) {
@@ -447,27 +447,27 @@ const TypingInProgress = (user) => {
       const lastMessage = GetLastMessage(item);
       if (lastMessage != null) {
         if (!oldTypingUsers[item]) {
-          if (typingUsers[item]){
-
+          if (typingUsers[item]) {
             usersss.classList.add("typing-demo");
             setTimeout(() => {
-              usersss.classList.remove("typing-demo")
-              typingUsers[item]=false
-              usersss.textContent = item+" - " + lastMessage.Content;
-              console.log("Debug setTimeout")
-
+              typingUsers[item] = false;
+              usersss.textContent = item + " - " + lastMessage.Content;
+              console.log("Debug setTimeout");
             }, 5000);
+
+            setTimeout(() => {
+              usersss.classList.remove("typing-demo");
+            }, 1500);
           }
           oldTypingUsers[item] = true;
-        
 
-        if (typingUsers[item]) {
-          usersss.textContent += " is typing...";
-          console.log("Debug condition")
-        } else {
-          usersss.textContent = item+" - " + lastMessage.Content;
+          if (typingUsers[item]) {
+            usersss.textContent += " is typing...";
+            console.log("Debug condition");
+          } else {
+            usersss.textContent = item + " - " + lastMessage.Content;
+          }
         }
-      }
       }
       span.classList.add("dot");
       list.classList.add("cr");
