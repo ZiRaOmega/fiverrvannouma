@@ -110,10 +110,15 @@ export default {
         
                 //Regex for special characters
                 let special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+                //Regex for only spaces without characters
+                let spaces = /^\s+$/;
                 let commentResponseValue = postCommentResponse.value;
-                console.log(special.test(commentResponseValue),"specialtest")
-                
-                if (special.test(commentResponseValue)) {
+                console.log(special.test(commentResponseValue),commentResponseValue,"specialtest")
+                console.log(special.test(commentResponseValue),commentResponseValue=="" ,spaces.test(commentResponseValue),"BTCH")
+                if (special.test(commentResponseValue)|| commentResponseValue=="" || spaces.test(commentResponseValue)) {
+                    if (commentResponseValue==""){
+                        return
+                    }
                     alert("Special characters are not allowed");
                     
                     let specinter=setInterval(()=>{
@@ -131,8 +136,11 @@ export default {
                             }
                         }
                     }, 1000);
-                } else {
-                    //AddComment(commentResponseValue, postIdValue);
+                    
+                } else if (commentResponseValue!="" && !spaces.test(commentResponseValue)) {
+                    console.log(commentResponseValue,"LAS")
+                    AddComment(commentResponseValue, postIdValue);
+                    
                 }
             });
         });

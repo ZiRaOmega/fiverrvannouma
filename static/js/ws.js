@@ -314,16 +314,20 @@ function loadPosts(posts) {
 
       postCommentResponse = postDiv.querySelector(".response");
       //Regex for special characters
-      special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+      let special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+      //Regex for only spaces without characters
+      let spaces = /^\s+$/;
       //commentResponseValue = postCommentResponse.value;
       console.log(special.test(commentResponseValue), "specialtest");
 
-      if (special.test(commentResponseValue)) {
+      if (special.test(commentResponseValue) || commentResponseValue=="" || spaces.test(commentResponseValue)) {
         alert("Special characters are not allowed");
-        postCommentResponse.value = "";
-      } else {
+        //postCommentResponse.value = "";
+      } else if (commentResponseValue!="" && !spaces.test(commentResponseValue)) {
         AddComment(commentResponseValue, postIdValue);
+        postCommentResponse.value = "";
       }
+      return
     });
 
     response.placeholder = "Comment";
@@ -366,8 +370,8 @@ function loadPosts(posts) {
       document.querySelector("#postList").appendChild(container);
     }
 
-    container.addEventListener("click", (ev) => {
-      const comments = ev.currentTarget.querySelector(".post_comment");
+    content.addEventListener("click", () => {
+      const comments = comment;
       if (comments.style.display === "none") comments.style.display = "block";
       else comments.style.display = "none";
     });

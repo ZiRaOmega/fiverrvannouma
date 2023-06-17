@@ -368,7 +368,9 @@ select {
     width: 100px;
     padding: 5px;
 }
-
+#post_button:disabled{
+    opacity: 0.3;
+}
 .post_container {
     background-color: #e5e5e5df;
     border-bottom-right-radius: 8px;
@@ -478,6 +480,15 @@ select {
         opacity: 0;
         transform: translateX(100px);
     }
+}
+.post_content{
+    width: -webkit-fill-available;
+    border-radius: 10px;
+    border: none;
+
+}
+.post_content:hover{
+    background-color: #e5e5e5;
 }
 #post_content{
 
