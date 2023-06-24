@@ -39,6 +39,18 @@ export default {
                 </div>`;
   },
   postRender: () => {
+    let GetCookieValue=(cookieName)=>{
+      let cookieValue = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+      return cookieValue ? cookieValue.pop() : '';
+  }
+  window.GetCookieValue=GetCookieValue;
+  if (GetCookieValue("SESSION_ID")!=''){
+      document.getElementById("loginHeader").style.display="none"
+      document.getElementById("registerHeader").style.display="none"
+  }else{
+      document.getElementById("logout").style.display="none"
+      //router.navigate(null,"/login")
+  }
     document
       .querySelector("#form-register")
       .addEventListener("submit", (ev) => {

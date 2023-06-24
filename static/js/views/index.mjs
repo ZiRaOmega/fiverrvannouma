@@ -27,6 +27,7 @@ export default {
             document.getElementById("loginHeader").style.display="none"
             document.getElementById("registerHeader").style.display="none"
         }else{
+            document.getElementById("logout").style.display="none"
             router.navigate(null,"/login")
         }
         loadPosts(Posts);
