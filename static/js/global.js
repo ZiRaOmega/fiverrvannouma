@@ -11,17 +11,17 @@ const login = async (ev) => {
         body: formData,
     }).then(r => {
         if (r.status != 200) throw new Error("Wrong username or password.");
-
+        console.log(r.headers.get("username"));
         // Initialize WebSocket connection
         initWebsocket();
-
+        let UsernameLogin = r.headers.get("username")!=undefined?r.headers.get("username"):formData.get("username")
         console.log("login");
         // Hide the login and register headers
         document.getElementById("loginHeader").style.display = "none";
         document.getElementById("registerHeader").style.display = "none";
         document.getElementById("logout").style.display="block"
         //Add To localstorage the username
-        localStorage.setItem("username", formData.get("username"));
+        localStorage.setItem("username", UsernameLogin);
         // Navigate to the forum page
         router.navigate(null, "/forum");
     }).catch(r => {
@@ -86,12 +86,16 @@ const logout = async (ev) => {
     document.getElementById("loginHeader").style.display = "block";
     document.getElementById("registerHeader").style.display = "block";
     document.getElementById("logout").style.display="none"
-    clearTimeout(UserLeftHeader);
+    localStorage.clear();
+    /* if (!UserLeftHeader){
+
+        clearTimeout(UserLeftHeader);
+    } */
     document.getElementById("user").innerText = "";
     console.log("Logout");
 
     // Navigate to the forum page
-    router.navigate(null, "/forum");
+    router.navigate(null, "/login");
 };
 
 // SearchPost function that filters posts based on the search query

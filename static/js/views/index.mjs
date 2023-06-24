@@ -30,6 +30,7 @@ export default {
             document.getElementById("logout").style.display="none"
             router.navigate(null,"/login")
         }
+        StartUserLeftHeader()
         loadPosts(Posts);
         document.querySelector('#post_button').addEventListener('click', function() {
             let title = document.querySelector('#post_title').value;

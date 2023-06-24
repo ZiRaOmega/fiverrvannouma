@@ -181,8 +181,12 @@ func main() {
 							Path:     "/",
 							// Setting a new session cookie in the client's browser.
 						})
-
+						Username, _ := GetUsernameBySessionsID(GetDB(), sessionId)
+						//WriteHeader : status = 200 and username = Username
+						w.Header().Set("username", Username)
+						w.Header().Set("Access-Control-Expose-Headers", "username")
 						w.WriteHeader(http.StatusOK)
+
 						// Sending a 200 OK status code to the client.
 						return
 					}

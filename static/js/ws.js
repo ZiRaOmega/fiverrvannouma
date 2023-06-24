@@ -209,10 +209,22 @@ function createList(users) {
   //document.querySelector(".convs").appendChild(list);
 }
 
-let UserLeftHeader = setTimeout(() => {
-  document.querySelector("#user").innerText = user.username;
-}, 500);
-window.UserLeftHeader = UserLeftHeader;
+/* let UserLeftHeader = setTimeout(() => {
+
+  document.querySelector("#user").innerText = localStorage.getItem("username");
+}, 500); */
+let UserLeftHeaderStarted = false;
+const StartUserLeftHeader=()=>{
+  let UserLeftHeader = setTimeout(() => {
+    document.querySelector("#user").innerText = localStorage.getItem("username");
+    if (document.querySelector("#user")!=undefined && document.querySelector("#user")!=null){
+      UserLeftHeaderStarted=true
+    }
+  }, 500);
+}
+
+window.StartUserLeftHeader = StartUserLeftHeader;
+window.UserLeftHeaderStarted=UserLeftHeaderStarted;
 var Counter = 10;
 var FirstLoad = true;
 

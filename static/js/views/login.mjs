@@ -10,11 +10,17 @@ export default {
                 <br>
                 <input id="password" type="password" name="password" placeholder="******">
                 <br>
-                <input id="loginsubmit" type="submit" class="pointer" value="Login" onclick="document.getElementById('user').innerHTML = document.getElementById('username').value">
+                <input id="loginsubmit" type="submit" class="pointer" value="Login" onclick="document.getElementById('user').innerHTML = localstorage.getItem("username")">
                 </form>
                 </div>`;
     },
     postRender: () => {
+        let UserPrint=setTimeout(()=>{
+            StartUserLeftHeader();
+            if (UserLeftHeaderStarted){
+                clearInterval(UserPrint)
+            }
+        },1000)
         let GetCookieValue=(cookieName)=>{
             let cookieValue = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
             return cookieValue ? cookieValue.pop() : '';
