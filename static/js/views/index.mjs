@@ -38,7 +38,8 @@ export default {
             let categories = document.querySelector('#post_categories').value;
             //Regex for special characters
             let special =   /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-            if (special.test(title) || special.test(content) || special.test(categories)) {
+            let spaces = /^\s+$/;
+            if (special.test(title) || special.test(content) || special.test(categories) || spaces.test(title)||spaces.test(content)||spaces.test(categories)) {
                 alert("Special characters are not allowed");
                 let specinter=setInterval(()=>{
                     if (document.location.pathname!="/forum"){
