@@ -567,3 +567,18 @@ select {
     color: var(--light-accent);
     font-weight: bold;
 }
+.liveMessage_div{
+
+    display: flex;
+  justify-content: center;
+  align-items: center;
+    position: fixed;
+    top: 130px;
+    right: 10px;
+    background-color: aliceblue;
+    border-radius: 10px;
+    width: 25vw;
+    height: 7vh;
+    color: var(--light-accent);
+    font-weight: bold;
+}

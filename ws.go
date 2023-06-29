@@ -460,7 +460,14 @@ func WsPrivate(db *sql.DB, ws *websocket.Conn, message Message) {
 	Date := mp["date"].(string)
 	CreatePrivateMessage(db, From, To, Content, Date)
 
-	for client := range clients {
+	for client, clientWS := range clients {
+		if clientWS.Username == To {
+			type LiveMessage struct {
+				Type    string  `json:"type"`
+				Message Message `json:"message"`
+			}
+			client.WriteJSON(LiveMessage{Type: "live:message", Message: message})
+		}
 		WsSynchronizeMessages(db, client, message)
 	}
 }

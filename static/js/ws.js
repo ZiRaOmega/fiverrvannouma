@@ -126,7 +126,7 @@ const initWebsocket = () => {
     synchronizeUsers();
     synchronizePosts();
   };
-
+  let autoscroll=null;
   websocket.onmessage = function (event) {
     console.log(event.data);
     var message = JSON.parse(event.data);
@@ -139,8 +139,10 @@ const initWebsocket = () => {
         UserConversations = message.Messages;
         console.log("conv");
         loadConversation(currentDiscussion);
-        setTimeout(() => {
+        autoscroll=setTimeout(() => {
+
           AutoScrollMessages();
+          clearTimeout(autoscroll)
         }, 100);
         //AutoScrollMessages();
         break;
@@ -161,6 +163,34 @@ const initWebsocket = () => {
       case "typing":
         TypingInProgress(message.from);
         console.log(message, "TYPING");
+        break;
+      case "live:message":
+        if (window.location.pathname != "/pm") {
+          console.log(message.message.message)
+          //Check if there is already a typing_div if yes just change the innerText else do the next
+          if (document.querySelector(".liveMessage_div") != null) {
+            console.log("lllll");
+            document.querySelector(
+              ".liveMessage_div"
+            ).innerText = `🔔 ${message.message.message.from} has send a message !`;
+          } else {
+            //Create a div that will say user is liveMessage on the bottom right
+            const typingDiv = document.createElement("div");
+            typingDiv.classList.add("liveMessage_div");
+            typingDiv.innerText = `🔔 ${message.message.message.from} has send a message  !`;
+            //Set the div to the bottom right of the window
+            typingDiv.addEventListener("click", () => {
+              typingDiv.remove();
+              router.navigate(null, "/pm?user=" + message.message.message.from);
+            });
+            document.body.appendChild(typingDiv);
+            //Set a timeout then delete the notif
+            setTimeout(() => {
+              typingDiv.remove();
+            }, 10000);
+          }
+          return;
+        }
     }
   };
 };
